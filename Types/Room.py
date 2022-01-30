@@ -1,7 +1,9 @@
+"""Enum for creating a Room type."""
 from enum import Enum
 
 
 class Room(Enum):
+    """Define values for the Room type."""
     AIRLOCK = 'Airlock'
     ARMORY = 'Armory'
     BRIDGE = 'Bridge'
