@@ -202,8 +202,7 @@ def slow_print(line_to_print):
         # Puts a small delay between each print to create the effect.
         for char in line:
             print(char, end='')
-            # todo: uncomment time.sleep delay
-            # time.sleep(.02)
+            time.sleep(.02)
         # Prints two lines between each section
         print('')
 
@@ -319,7 +318,6 @@ def get_player_action():
     invalid_input_count = 0
     # Checks for a valid command or a valid direction.
     # If either is not valid, then it enters the loop.
-    # todo: validation - get it working
     while command == -1 or (
             direction_or_item not in rooms[player[Key.LOCATION]].keys()
             and direction_or_item not in rooms[player[Key.LOCATION]][Key.ITEM].keys()
@@ -351,7 +349,7 @@ def get_player_action():
                   "to view how to play.")
         # Increments counter by one to keep track of invalid input attempts.
         invalid_input_count += 1
-        # If the player enters valid input at this point the loop will break when it checks the input.
+        # If the player enters valid input the loop will break when it checks the input.
         # Otherwise, the loop will continue.
         command, direction_or_item = player_input()
         command, direction_or_item = parse_enum(command, direction_or_item)
