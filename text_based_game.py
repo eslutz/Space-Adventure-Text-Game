@@ -3,7 +3,6 @@ from enum import Enum
 import time
 
 
-# todo: items - try tuple instead of dictionary
 class Command(Enum):
     """Define values for the Command type."""
     EXIT = 'exit'
@@ -159,13 +158,26 @@ player = {
 }
 
 
+def list_enum_values(enum_list, sort_values=False):
+    """Returns list of enum values with an optional parameter to sort the list."""
+    # List to store enum values and return.
+    list_of_values = []
+    # Loops through passed in list to get value of each enum.
+    for item in enum_list:
+        # Adds value to list_of_values.
+        list_of_values.append(item.value)
+    # Checks if sort_values is true.
+    # Sorts the list if true.
+    if sort_values:
+        list_of_values.sort()
+    # Returns list of values.
+    return list_of_values
+
+
 def instruction_help():
-    """Displays instructions on how to play the game"""
-    # List of required items to display.
-    required_item_list = []
-    for item in required_items:
-        required_item_list.append(item.value)
-    required_item_list.sort()
+    """Displays instructions on how to play the game."""
+    # Gets a list of required items to display.
+    required_item_list = list_enum_values(required_items, True)
     # Prints a line of dashes before the instructions.
     print('\n'+'-' * 90)
     # Displays instructions on how to play the game.
@@ -226,12 +238,9 @@ def display_status():
     # Prints a line of dashes before displaying the current status of the player.
     print('\n' + '-' * 36)
     # Prints the players current location by accessing the player dictionary using the location key.
-    print(f"You are in the {player[Key.LOCATION].value}.")
-    # Creates a local list of the values players current inventory.
-    inventory_list = []
-    for item in player[Key.INVENTORY]:
-        inventory_list.append(item.value)
-    inventory_list.sort()
+    print(f'You are in the {player[Key.LOCATION].value}.')
+    # Gets a sorted list of the values in the players current inventory.
+    inventory_list = list_enum_values(player[Key.INVENTORY], True)
     # Prints the list of items the player has in their inventory.
     print(f"Inventory: [ {', '.join(inventory_list)} ]")
     # Checks if there is an item in the current room.
@@ -250,7 +259,7 @@ def display_status():
 
 
 def parse_enum(command, direction_or_item):
-    """Matches parameters to enums, else returns empty strings"""
+    """Matches parameters to enums, else returns empty strings."""
     # Loops through each member of the Command enum class.
     for command_member in Command:
         # Compares the entered string to the value of the current enum member.
@@ -340,7 +349,7 @@ def get_player_action():
         if invalid_input_count >= 2:
             print("You seem to be lost. Don't forget, you can enter the command 'help' "
                   "to view how to play.")
-        # increments counter by one.
+        # Increments counter by one.
         invalid_input_count += 1
         # If the player enters a valid move at this point it will break out of the loop.
         # Otherwise, the loop will continue.
@@ -379,13 +388,11 @@ def game_over():
     # Checks if the players current location contains the villain.
     # If it does, then it means they lose.
     # Displays losing message and returns true to quit the game.
-    elif list(rooms[player[Key.LOCATION]][Key.ITEM].keys())[0] is Item.VILLAIN:
+    if list(rooms[player[Key.LOCATION]][Key.ITEM].keys())[0] is Item.VILLAIN:
         slow_print([f'Oh no! You ran into the {Item.VILLAIN.value} and lost the game!'])
         return True
     # No game ending conditions were met, so return false to continue the game.
-    else:
-        return False
-
+    return False
 
 
 def exit_game():
