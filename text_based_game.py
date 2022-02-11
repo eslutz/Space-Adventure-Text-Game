@@ -126,7 +126,7 @@ rooms = {
         }
     },
     Room.REACTOR: {
-        Direction.EAST: Room.ENGINEERING,
+        Direction.WEST: Room.ENGINEERING,
         Key.ITEM: {
             Item.FLUX_CAPACITOR: 'a'
         }
@@ -214,7 +214,7 @@ def display_intro():
     # Prints a line of dashes after the title.
     print('-' * 90)
     # Separated game introduction in separate sections.
-    game_intro_line_one = "\n\tYour ship is under attack and you're adrift in space. Someone,\n" \
+    game_intro_line_one = "\n\tYour ship is under attack, and you're adrift in space. Someone,\n" \
                           "or something, is running amuck causing systems to malfunction."
     game_intro_line_two = "\n\tYou need to gather parts to get the ship up and running again\n" \
                           "as well as find supplies to deal with the uninvited guest. You will\n" \
@@ -228,6 +228,7 @@ def display_intro():
     lines_to_print = [game_intro_line_one, game_intro_line_two, game_intro_line_three]
     # Passes the array to slow_print to display.
     slow_print(lines_to_print)
+    input('\n(press enter to continue)')
     # Calls instruction_help() to initially display the instructions to the user.
     instruction_help()
 
@@ -381,13 +382,13 @@ def game_over():
     # If it is, then it means they have collected all items needed to win.
     # Displays winning message and returns true to quit the game.
     if set(required_items).issubset(player[Key.INVENTORY]):
-        slow_print(['Congrats! You collected all the required items and won the game!'])
+        slow_print(['\nCongrats! You collected all the required items and won the game!'])
         return True
     # Checks if the players current location contains the villain.
     # If it does, then it means they lose.
     # Displays losing message and returns true to quit the game.
     if list(rooms[player[Key.LOCATION]][Key.ITEM].keys())[0] is Item.VILLAIN:
-        slow_print([f'Oh no! You ran into the {Item.VILLAIN.value} and lost the game!'])
+        slow_print([f'\nOh no! You ran into the {Item.VILLAIN.value} and lost the game!'])
         return True
     # No game ending conditions were met, so return false to continue the game.
     return False
