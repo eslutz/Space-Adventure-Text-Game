@@ -3,6 +3,7 @@ from enum import Enum
 import time
 
 
+# todo: items - try tuple instead of dictionary
 class Command(Enum):
     """Define values for the Command type."""
     EXIT = 'exit'
@@ -367,6 +368,26 @@ def get_item():
     rooms[player[Key.LOCATION]][Key.ITEM] = {'': ''}
 
 
+def game_over():
+    """Determines if the game ending conditions have been met."""
+    # Checks if the list of required_items is a subset of the players inventory.
+    # If it is, then it means they have collected all items needed to win.
+    # Displays winning message and returns true to quit the game.
+    if set(required_items).issubset(player[Key.INVENTORY]):
+        slow_print(['Congrats! You collected all the required items and won the game!'])
+        return True
+    # Checks if the players current location contains the villain.
+    # If it does, then it means they lose.
+    # Displays losing message and returns true to quit the game.
+    elif list(rooms[player[Key.LOCATION]][Key.ITEM].keys())[0] is Item.VILLAIN:
+        slow_print([f'Oh no! You ran into the {Item.VILLAIN.value} and lost the game!'])
+        return True
+    # No game ending conditions were met, so return false to continue the game.
+    else:
+        return False
+
+
+
 def exit_game():
     """Gets and validates players input and returns True to quit or False to continue."""
     # Gets the players input, strips leading & trailing whitespace, and converts it to lower case.
@@ -385,7 +406,6 @@ def exit_game():
     return quit_game
 
 
-# todo: figure out game ending logic (run into villain or collect all items)
 def main():
     """Main function with the loop, function calls and game flow logic."""
     # Calls display_into to show the introduction and how to play the game.
@@ -396,6 +416,9 @@ def main():
     while not quit_game:
         # Calls display_status() to show the players current location.
         display_status()
+        # Checks if game winning conditions have been met.
+        if game_over():
+            break
         # Calls get_player_action() to get the players validated command and move.
         # Assigns the return values to player_command and player_direction.
         player_command, player_direction_or_item = get_player_action()
