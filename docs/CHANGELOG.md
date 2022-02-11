@@ -15,3 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - YYYY-MM-DD
 ### Added
+ - Completed v1 of the game
+   - Added game intro
+   - Added ability to move and pickup items
+   - Added input validation
+   - Added help menu
+   - Added ability to exit the game
+   - Added [documentation](https://github.com/eslutz/Space-Adventure-Text-Game/tree/develop/docs)
+ 
