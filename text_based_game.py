@@ -263,17 +263,17 @@ def parse_enum(command, direction_or_item):
     # Loops through each member of the Command enum class.
     for command_member in Command:
         # Compares the entered string to the value of the current enum member.
-        if command in command_member.value:
+        if command == command_member.value:
             # If it matches, assigns that member to command and breaks out of the loop.
             command = command_member
             break
     # If there is no match, assign an empty string to command.
     else:
-        command = ''
+        command = -1
     # Loops through each member of the Direction enum class.
     for direction_member in Direction:
         # Compares the string to value of current enum member.
-        if direction_or_item in direction_member.value:
+        if direction_or_item == direction_member.value:
             # If it matches, assigns that member to direction_or_item and breaks out of the loop.
             direction_or_item = direction_member
             break
@@ -282,13 +282,13 @@ def parse_enum(command, direction_or_item):
         # Loops through each member of the Item enum class.
         for item_member in Item:
             # Compares the string to value of current enum member.
-            if direction_or_item in item_member.value:
+            if direction_or_item == item_member.value:
                 # If a match, assigns that member to direction_or_item and breaks out of the loop.
                 direction_or_item = item_member
                 break
-        # If there is no match after this check, assign an empty string to command.
+        # If there is no match after this check, assign -1 to direction_or_item.
         else:
-            direction_or_item = ''
+            direction_or_item = -1
     # Returns either the matching enum or an empty string.
     return command, direction_or_item
 
@@ -320,7 +320,7 @@ def get_player_action():
     # Checks for a valid command or a valid direction.
     # If either is not valid, then it enters the loop.
     # todo: validation - get it working
-    while not command or (
+    while command == -1 or (
             direction_or_item not in rooms[player[Key.LOCATION]].keys()
             and direction_or_item not in rooms[player[Key.LOCATION]][Key.ITEM].keys()
     ):
@@ -329,29 +329,29 @@ def get_player_action():
             # Breaks out of the loop regardless of second value if the player wants to quit or help.
             break
         # If we get here, then we know the command isn't exit or help.
-        # Checks if the command is one of the other valid commands.
-        if not command:
+        # Checks that command is not a valid command.
+        if command == -1:
             # At this point the command is not valid.
             # Inform the player that the command they entered is not valid.
             print('That is not a valid command!')
-        # If we get here, then the command is valid which means the second value is not.
-        # Check if it is an incorrect direction.
+        # Check if it is a go action with an invalid direction.
         elif command == Command.GO and direction_or_item not in rooms[player[Key.LOCATION]].keys():
             # Inform the player that the direction they entered is not valid.
-            print(f"You can't go {direction_or_item.value}.")
+            print("You can't go that way.")
+        # Check if it is a get action with an invalid item.
         elif command == Command.GET \
                 and direction_or_item not in rooms[player[Key.LOCATION]][Key.ITEM].keys():
-            # Inform the player that the direction they entered is not valid.
-            print(f"You cannot get {direction_or_item.value}.")
-        # Display the players current status and then get their input again.
+            # Inform the player that the item they entered is not valid.
+            print('You cannot pick up that item.')
+        # Display the players current status.
         display_status()
         # If the player enters too many invalid commands they are prompted to ask for help.
         if invalid_input_count >= 2:
             print("You seem to be lost. Don't forget, you can enter the command 'help' "
                   "to view how to play.")
-        # Increments counter by one.
+        # Increments counter by one to keep track of invalid input attempts.
         invalid_input_count += 1
-        # If the player enters a valid move at this point it will break out of the loop.
+        # If the player enters valid input at this point the loop will break when it checks the input.
         # Otherwise, the loop will continue.
         command, direction_or_item = player_input()
         command, direction_or_item = parse_enum(command, direction_or_item)
