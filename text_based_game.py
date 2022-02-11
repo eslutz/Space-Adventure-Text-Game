@@ -2,13 +2,14 @@
 from enum import Enum
 import time
 
+
 # todo: replace all strings with enums and parse them
 class Command(Enum):
-    """Define values for the Action type."""
-    EXIT: 'exit'
+    """Define values for the Command type."""
+    EXIT = 'exit'
     GET = 'get'
     GO = 'go'
-    HELP = 'instruction_help'
+    HELP = 'help'
 
 
 class Direction(Enum):
@@ -106,13 +107,16 @@ rooms = {
     Room.SCIENCE_LAB: {
         Direction.SOUTH: Room.COMMON_AREA,
         Direction.EAST: Room.CARGO_BAY,
-        Direction.WEST: Room. ARMORY,
+        Direction.WEST: Room.ARMORY,
         'item': Item.SPACE_GLUE
     }
 }
 
-# A dictionary for storing the players current location.
-player = {'location': Room.COMMON_AREA}
+# A dictionary for storing the players current location and inventory list.
+player = {
+    'location': Room.COMMON_AREA,
+    'inventory': []
+}
 
 
 def instruction_help():
@@ -125,6 +129,7 @@ def instruction_help():
     print("Use the command 'exit' to quit the game.")
     # Prints a line of dashes after the instructions.
     print('-' * 68)
+
 
 def slow_print(line_to_print):
     """Function for the fun of printing slowly like a message."""
@@ -149,77 +154,105 @@ def display_intro():
     # Separated game introduction in separate sections.
     game_intro_line_one = "Your ship is under attack and you're adrift in space. Someone,\n" \
                           "or something, is running amuck causing systems to malfunction."
-    game_intro_line_two = "You need to gather parts to get the ship up and running again as well\n" \
-                          " as find supplies to deal with the uninvited guest. You will need to\n" \
-                          "gather an access card from the bridge to get access to any locked\n" \
-                          "areas, space glue from the science lab, a sonic screwdriver from\n" \
-                          "engineering, and spare parts from the cargo bay to repair the ship,\n" \
-                          "and snacks from the galley to keep you going."
+    game_intro_line_two = "You need to gather parts to get the ship up and running again as\n" \
+                          "well as find supplies to deal with the uninvited guest. You will\n" \
+                          "need to gather an access card from the bridge to get access to any\n" \
+                          "locked areas, space glue from the science lab, a sonic screwdriver\n" \
+                          "from engineering, and spare parts from the cargo bay to repair the\n" \
+                          "ship, and snacks from the galley to keep you going."
     game_intro_line_three = "Lastly, you will need to get your suit of powered armor from the\n" \
                             "armory to escort the intruder from the ship how you see fit."
     # Puts each section of text into an array
     lines_to_print = [game_intro_line_one, game_intro_line_two, game_intro_line_three]
     # Passes the array to slow_print to display.
     slow_print(lines_to_print)
-
     # Calls instruction_help() to initially display the instructions to the user.
     instruction_help()
+
 
 def display_status():
     """Displays the current location of the player."""
     # Prints a line of dashes before displaying the current status of the player.
-    print('\n'+'-' * 36)
+    print('\n' + '-' * 36)
     # Prints the players current location by accessing the player dictionary using the location key.
     print(f"You are in the {player['location'].value}")
     # Prints a line of dashes before the move prompt.
     print('-' * 36)
 
 
+def parse_enum(command, direction):
+    """Matches parameters to enums, else returns empty strings"""
+    # Loops through each member of the Command enum class.
+    for command_member in Command:
+        # Compares the entered string to the value of the current enum member.
+        if command in command_member.value:
+            # If it matches, assigns that member to command and breaks out of the loop.
+            command = command_member
+            break
+    # If there is no match, assign an empty string to command.
+    else:
+        command = ''
+    # Loops through each member of the Direction enum class.
+    for direction_member in Direction:
+        # Compares the entered string to the value of the current enum member.
+        if direction in direction_member.value:
+            # If it matches, assigns that member to direction and breaks out of the loop.
+            direction = direction_member
+            break
+            # If there is no match, assign an empty string to command.
+    else:
+        direction = ''
+    # Returns either the matching enum or an empty string.
+    return command, direction
+
+
 def player_input():
-    """Takes the players input and splits it, and returns the action and direction."""
+    """Takes the players input and splits it, and returns the command and direction."""
     # Gets the players input, strips leading & trailing whitespace.
-    # Then splits it into two parts (action, direction).
+    # Then splits it into two parts (command, direction).
     player_move = input('Enter your move => ').strip().split(' ', 1)
-    # Assigns the player action and converts it all to lower case for future comparison.
-    action = player_move[0].lower()
+    # Assigns the player command and converts it all to lower case for future comparison.
+    command = player_move[0].lower()
     # Checks that there is a second value in player_move to assign to direction.
     # If there isn't, then assign an empty string.
-    # Otherwise, assign the direction and strip extra whitespace from between action and direction.
+    # Otherwise, assign the direction and strip extra whitespace from between command and direction.
     # Then converts it to title case for future comparison.
     direction = player_move[1].strip().title() if len(player_move) > 1 else ''
-    # Return the action and direction values.
-    return action, direction
+    # Return the command and direction values.
+    return command, direction
 
 
 def get_player_action():
-    """Gets the players input, validates it, and returns the action and direction."""
-    # Calls player_input function and assigns the return values to action and direction.
-    # todo: parse string input into enums
-    action, direction = player_input()
-    # Checks for a valid action or a valid direction.
+    """Gets the players input, validates it, and returns the command and direction."""
+    # Calls player_input function and assigns the return values to command and direction.
+    command, direction = player_input()
+    # Passes command and direction to parse_enum to convert string to matching enum.
+    command, direction = parse_enum(command, direction)
+    # Checks for a valid command or a valid direction.
     # If either is not valid, then it enters the loop.
-    while action not in ('go', 'exit') or direction not in rooms[player['location']].keys():
-        # Checks if a valid action of exit was given, but an invalid direction was entered.
-        if action == 'exit':
+    while not command or direction not in rooms[player['location']].keys():
+        # Checks if a valid command of exit was given, but an invalid direction was entered.
+        if command == Command.EXIT:
             # Breaks out of the loop if the player wants to quit.
             break
-        # If we get here, then we know the action isn't exit.
-        # Checks if the action is for go.
-        if action != 'go':
-            # At this point the action is neither exit nor go.
-            # Inform the player that the action they entered is not valid.
-            print(f'{action} is not a valid action!')
-        # If we get here, then the action is valid which means the direction is not.
+        # If we get here, then we know the command isn't exit.
+        # Checks if the command is for go.
+        if not command:
+            # At this point the command is neither exit nor go.
+            # Inform the player that the command they entered is not valid.
+            print('That is not a valid command!')
+        # If we get here, then the command is valid which means the direction is not.
         else:
             # Inform the player that the direction they entered is not valid.
-            print(f"You can't go {direction}!")
+            print("You can't go that way")
         # Display the players current status and then get their input again.
         display_status()
         # If the player enters a valid move at this point it will break out of the loop.
         # Otherwise, the loop will continue.
-        action, direction = player_input()
-    # Return the validated action and direction.
-    return action, direction
+        command, direction = player_input()
+        command, direction = parse_enum(command, direction)
+    # Return the validated command and direction.
+    return command, direction
 
 
 def move_player(move_direction):
@@ -258,24 +291,24 @@ def main():
     while not quit_game:
         # Calls display_status() to show the players current location.
         display_status()
-        # Calls get_player_action() to get the players validated action and move.
-        # Assigns the return values to player_action and player_direction.
-        player_action, player_direction = get_player_action()
-        # Checks if the players action is to exit the game.
-        if player_action == 'exit':
+        # Calls get_player_action() to get the players validated command and move.
+        # Assigns the return values to player_command and player_direction.
+        player_command, player_direction = get_player_action()
+        # Checks if the players command is to exit the game.
+        if player_command == Command.EXIT:
             # At this point, the player wants to quit.
             # Call exit_game() and set its return value to quit_game.
             # If exit_game() returns true, loop will end.
             # If exit_game() returns false, loop will continue.
             quit_game = exit_game()
-        # At this point it means the player action is go.
-        elif player_action == 'go':
+        # At this point it means the player command is go.
+        elif player_command == Command.GO:
             # Pass player_direction to move_player to update the player's location to a new room.
             move_player(player_direction)
     # After exiting the loop, display a line of dashes.
     # The display a goodbye message to the player.
-    print('\n'+'-' * 46)
-    print('Thanks for playing Dragon Text Adventure Game.')
+    print('\n' + '-' * 46)
+    print('Thanks for playing Space Text Adventure Game.')
     print('I hope you enjoyed it!!!')
 
 
