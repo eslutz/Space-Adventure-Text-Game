@@ -48,93 +48,137 @@ class Room(Enum):
     SCIENCE_LAB = 'Science Lab'
 
 
+class Key(Enum):
+    """Defines values for needed dictionary keys."""
+    INVENTORY = 1
+    ITEM = 2
+    LOCATION = 3
+
+
 # A dictionary for the simplified dragon text game.
 # The dictionary links a room to other rooms.
 rooms = {
     Room.AIRLOCK: {
         Direction.SOUTH: Room.CARGO_BAY,
-        'item': Item.VILLAIN
+        Key.ITEM: {
+            Item.VILLAIN: 'the'
+        }
     },
     Room.ARMORY: {
         Direction.SOUTH: Room.BRIDGE,
         Direction.EAST: Room.SCIENCE_LAB,
-        'item': Item.POWERED_ARMOR
+        Key.ITEM: {
+            Item.POWERED_ARMOR: 'your'
+        }
     },
     Room.BRIDGE: {
         Direction.NORTH: Room.ARMORY,
         Direction.SOUTH: Room.MEDICAL_BAY,
         Direction.EAST: Room.COMMON_AREA,
-        'item': Item.ACCESS_CARD
+        Key.ITEM: {
+            Item.ACCESS_CARD: 'an'
+        }
     },
     Room.CARGO_BAY: {
         Direction.NORTH: Room.AIRLOCK,
         Direction.SOUTH: Room.ENGINEERING,
         Direction.WEST: Room.SCIENCE_LAB,
-        'item': Item.SPARE_PARTS
+        Key.ITEM: {
+            Item.SPARE_PARTS: 'some'
+        }
     },
     Room.COMMON_AREA: {
         Direction.NORTH: Room.SCIENCE_LAB,
         Direction.SOUTH: Room.GALLEY,
         Direction.EAST: Room.ENGINEERING,
         Direction.WEST: Room.BRIDGE,
-        'item': ''
+        Key.ITEM: {
+            '': ''
+        }
     },
     Room.CREW_QUARTERS: {
         Direction.WEST: Room.GALLEY,
-        'item': Item.SPACE_SNACKS
+        Key.ITEM: {
+            Item.SOCKS: 'your'
+        }
     },
     Room.ENGINEERING: {
         Direction.NORTH: Room.CARGO_BAY,
         Direction.EAST: Room.REACTOR,
         Direction.WEST: Room.COMMON_AREA,
-        'item': Item.SONIC_SCREWDRIVER
+        Key.ITEM: {
+            Item.SONIC_SCREWDRIVER: 'a'
+        }
     },
     Room.GALLEY: {
         Direction.NORTH: Room.COMMON_AREA,
         Direction.EAST: Room.CREW_QUARTERS,
         Direction.WEST: Room.MEDICAL_BAY,
-        'item': Item.SPACE_SNACKS
+        Key.ITEM: {
+            Item.SPACE_SNACKS: 'some'
+        }
     },
     Room.MEDICAL_BAY: {
         Direction.NORTH: Room.BRIDGE,
         Direction.EAST: Room.GALLEY,
-        'item': Item.FIRST_AID_KIT
+        Key.ITEM: {
+            Item.FIRST_AID_KIT: 'a'
+        }
     },
     Room.REACTOR: {
         Direction.EAST: Room.ENGINEERING,
-        'item': Item.FLUX_CAPACITOR
+        Key.ITEM: {
+            Item.FLUX_CAPACITOR: 'a'
+        }
     },
     Room.SCIENCE_LAB: {
         Direction.SOUTH: Room.COMMON_AREA,
         Direction.EAST: Room.CARGO_BAY,
         Direction.WEST: Room.ARMORY,
-        'item': Item.SPACE_GLUE
+        Key.ITEM: {
+            Item.SPACE_GLUE: 'some'
+        }
     }
 }
 
+# A list of the items required to win the game.
+required_items = [
+    Item.ACCESS_CARD,
+    Item.POWERED_ARMOR,
+    Item.SONIC_SCREWDRIVER,
+    Item.SPACE_GLUE,
+    Item.SPACE_SNACKS,
+    Item.SPARE_PARTS
+]
+
 # A dictionary for storing the players current location and inventory list.
 player = {
-    'location': Room.COMMON_AREA,
-    'inventory': []
+    Key.LOCATION: Room.COMMON_AREA,
+    Key.INVENTORY: []
 }
 
 
 def instruction_help():
     """Displays instructions on how to play the game"""
+    # List of required items to display.
+    required_item_list = []
+    for item in required_items:
+        required_item_list.append(item.value)
+    required_item_list.sort()
     # Prints a line of dashes before the instructions.
-    print('\n'+'-' * 82)
+    print('\n'+'-' * 90)
     # Displays instructions on how to play the game.
     print('Explore the game by using move commands to navigate around the map.')
-    print('You must collect the six required items to win the game.')
-    print('If you run into whatever is on your ship before collecting all items, you lose!')
-    print('\nMove Commands:')
+    print('- You must collect the six required items to win the game.')
+    print('- If you run into whatever is on your ship before collecting all items, you lose!')
+    print('\nRequired Items:')
+    print(f"\t{', '.join(required_item_list)}")
+    print('Move Commands:')
     print('\tgo North, go South, go East, go West')
     print('Other Commands:')
     print('\tget <item name>, help, exit')
-    print('Required Items:')
-    print('\taccess card, space glue, sonic screwdriver, spare parts, snacks, powered armor')
     # Prints a line of dashes after the instructions.
-    print('-' * 82)
+    print('-' * 90)
 
 
 def slow_print(line_to_print):
@@ -156,18 +200,18 @@ def display_intro():
     # Displays game title.
     print('Space Text Adventure Game')
     # Prints a line of dashes after the title.
-    print('-' * 82)
+    print('-' * 90)
     # Separated game introduction in separate sections.
-    game_intro_line_one = "Your ship is under attack and you're adrift in space. Someone,\n" \
+    game_intro_line_one = "\n\tYour ship is under attack and you're adrift in space. Someone,\n" \
                           "or something, is running amuck causing systems to malfunction."
-    game_intro_line_two = "You need to gather parts to get the ship up and running again as\n" \
-                          "well as find supplies to deal with the uninvited guest. You will\n" \
+    game_intro_line_two = "\n\tYou need to gather parts to get the ship up and running again\n" \
+                          "as well as find supplies to deal with the uninvited guest. You will\n" \
                           "need to gather an access card from the bridge to get access to any\n" \
                           "locked areas, space glue from the science lab, a sonic screwdriver\n" \
                           "from engineering, and spare parts from the cargo bay to repair the\n" \
                           "ship, and snacks from the galley to keep you going."
-    game_intro_line_three = "Lastly, you will need to get your suit of powered armor from the\n" \
-                            "armory to escort the intruder from the ship how you see fit."
+    game_intro_line_three = "\n\tLastly, you will need to get your suit of powered armor from\n" \
+                            "the armory to escort the intruder from the ship how you see fit."
     # Puts each section of text into an array
     lines_to_print = [game_intro_line_one, game_intro_line_two, game_intro_line_three]
     # Passes the array to slow_print to display.
@@ -181,17 +225,30 @@ def display_status():
     # Prints a line of dashes before displaying the current status of the player.
     print('\n' + '-' * 36)
     # Prints the players current location by accessing the player dictionary using the location key.
-    print(f"You are in the {player['location'].value}")
+    print(f"You are in the {player[Key.LOCATION].value}.")
+    # Creates a local list of the values players current inventory.
+    inventory_list = []
+    for item in player[Key.INVENTORY]:
+        inventory_list.append(item.value)
+    inventory_list.sort()
     # Prints the list of items the player has in their inventory.
-    print(f"Inventory: {player['inventory']}")
-    # Displays any item in the current location, if there is one.
-    if rooms[player['location']]['item']:
-        print(f"You see {rooms[player['location']]['item'].value}")
+    print(f"Inventory: [ {', '.join(inventory_list)} ]")
+    # Checks if there is an item in the current room.
+    # Does this by creating a list of the item keys and checking it has a value.
+    if list(rooms[player[Key.LOCATION]][Key.ITEM].keys())[0]:
+        # Prints a line of dashes before the room item display.
+        print('-' * 36)
+        # Displays the item in the current room.
+        item_determiner = rooms[player[Key.LOCATION]][Key.ITEM][
+            list(rooms[player[Key.LOCATION]][Key.ITEM].keys())[0]
+        ]
+        item = list(rooms[player[Key.LOCATION]][Key.ITEM].keys())[0].value.lower()
+        print(f'You see {item_determiner} {item}.')
     # Prints a line of dashes before the move prompt.
     print('-' * 36)
 
 
-def parse_enum(command, direction):
+def parse_enum(command, direction_or_item):
     """Matches parameters to enums, else returns empty strings"""
     # Loops through each member of the Command enum class.
     for command_member in Command:
@@ -205,16 +262,25 @@ def parse_enum(command, direction):
         command = ''
     # Loops through each member of the Direction enum class.
     for direction_member in Direction:
-        # Compares the entered string to the value of the current enum member.
-        if direction in direction_member.value:
-            # If it matches, assigns that member to direction and breaks out of the loop.
-            direction = direction_member
+        # Compares the string to value of current enum member.
+        if direction_or_item in direction_member.value:
+            # If it matches, assigns that member to direction_or_item and breaks out of the loop.
+            direction_or_item = direction_member
             break
-            # If there is no match, assign an empty string to command.
+    # If there is no match in Direction, check for match in Item.
     else:
-        direction = ''
+        # Loops through each member of the Item enum class.
+        for item_member in Item:
+            # Compares the string to value of current enum member.
+            if direction_or_item in item_member.value:
+                # If a match, assigns that member to direction_or_item and breaks out of the loop.
+                direction_or_item = item_member
+                break
+        # If there is no match after this check, assign an empty string to command.
+        else:
+            direction_or_item = ''
     # Returns either the matching enum or an empty string.
-    return command, direction
+    return command, direction_or_item
 
 
 def player_input():
@@ -224,40 +290,49 @@ def player_input():
     player_move = input('Enter your move => ').strip().split(' ', 1)
     # Assigns the player command and converts it all to lower case for future comparison.
     command = player_move[0].lower()
-    # Checks that there is a second value in player_move to assign to direction.
+    # Checks that there is a second value in player_move to assign to direction_or_item.
     # If there isn't, then assign an empty string.
-    # Otherwise, assign the direction and strip extra whitespace from between command and direction.
+    # Otherwise, assign the value and strip extra whitespace from between command and value.
     # Then converts it to title case for future comparison.
-    direction = player_move[1].strip().title() if len(player_move) > 1 else ''
-    # Return the command and direction values.
-    return command, direction
+    direction_or_item = player_move[1].strip().title() if len(player_move) > 1 else ''
+    # Return the command and direction_or_item values.
+    return command, direction_or_item
 
 
 def get_player_action():
     """Gets the players input, validates it, and returns the command and direction."""
     # Calls player_input function and assigns the return values to command and direction.
-    command, direction = player_input()
+    command, direction_or_item = player_input()
     # Passes command and direction to parse_enum to convert string to matching enum.
-    command, direction = parse_enum(command, direction)
+    command, direction_or_item = parse_enum(command, direction_or_item)
     # Counter for number of times the player goes through the loop for invalid input.
     invalid_input_count = 0
     # Checks for a valid command or a valid direction.
     # If either is not valid, then it enters the loop.
-    while not command or direction not in rooms[player['location']].keys():
-        # Checks if a valid command of exit was given, but an invalid direction was entered.
-        if command == Command.EXIT:
-            # Breaks out of the loop if the player wants to quit.
+    # todo: validation - get it working
+    while not command or (
+            direction_or_item not in rooms[player[Key.LOCATION]].keys()
+            and direction_or_item not in rooms[player[Key.LOCATION]][Key.ITEM].keys()
+    ):
+        # Check if valid command of exit or help was given, but an invalid second value was entered.
+        if command in (Command.EXIT, Command.HELP):
+            # Breaks out of the loop regardless of second value if the player wants to quit or help.
             break
-        # If we get here, then we know the command isn't exit.
-        # Checks if the command is for go.
+        # If we get here, then we know the command isn't exit or help.
+        # Checks if the command is one of the other valid commands.
         if not command:
-            # At this point the command is neither exit nor go.
+            # At this point the command is not valid.
             # Inform the player that the command they entered is not valid.
             print('That is not a valid command!')
-        # If we get here, then the command is valid which means the direction is not.
-        else:
+        # If we get here, then the command is valid which means the second value is not.
+        # Check if it is an incorrect direction.
+        elif command == Command.GO and direction_or_item not in rooms[player[Key.LOCATION]].keys():
             # Inform the player that the direction they entered is not valid.
-            print("You can't go that way")
+            print(f"You can't go {direction_or_item.value}.")
+        elif command == Command.GET \
+                and direction_or_item not in rooms[player[Key.LOCATION]][Key.ITEM].keys():
+            # Inform the player that the direction they entered is not valid.
+            print(f"You cannot get {direction_or_item.value}.")
         # Display the players current status and then get their input again.
         display_status()
         # If the player enters too many invalid commands they are prompted to ask for help.
@@ -268,18 +343,28 @@ def get_player_action():
         invalid_input_count += 1
         # If the player enters a valid move at this point it will break out of the loop.
         # Otherwise, the loop will continue.
-        command, direction = player_input()
-        command, direction = parse_enum(command, direction)
+        command, direction_or_item = player_input()
+        command, direction_or_item = parse_enum(command, direction_or_item)
     # Return the validated command and direction.
-    return command, direction
+    return command, direction_or_item
 
 
 def move_player(move_direction):
     """Takes the players go direction and updates player to that location."""
     # The validated direction is passed into the function and used to update the player's location.
-    # Use value of the players current location (player['location']) as key for the room dictionary.
+    # Use value of the players current location (player[Key.LOCATION]) as key for room dictionary.
     # Use the direction that was passed in as the key for the nested dictionary to get the new room.
-    player['location'] = rooms[player['location']][move_direction]
+    player[Key.LOCATION] = rooms[player[Key.LOCATION]][move_direction]
+
+
+def get_item():
+    """Takes the item from the current player location and adds it to their inventory."""
+    # Use value of the players current location (player[Key.LOCATION]) as key for room dictionary.
+    # Then append the value of item into the player inventory list.
+    player[Key.INVENTORY].append(list(rooms[player[Key.LOCATION]][Key.ITEM].keys())[0])
+    # Finally, remove the current item from the room.
+    del rooms[player[Key.LOCATION]][Key.ITEM]
+    rooms[player[Key.LOCATION]][Key.ITEM] = {'': ''}
 
 
 def exit_game():
@@ -300,6 +385,7 @@ def exit_game():
     return quit_game
 
 
+# todo: figure out game ending logic (run into villain or collect all items)
 def main():
     """Main function with the loop, function calls and game flow logic."""
     # Calls display_into to show the introduction and how to play the game.
@@ -312,7 +398,7 @@ def main():
         display_status()
         # Calls get_player_action() to get the players validated command and move.
         # Assigns the return values to player_command and player_direction.
-        player_command, player_direction = get_player_action()
+        player_command, player_direction_or_item = get_player_action()
         # Checks if the players command is to exit the game.
         if player_command == Command.EXIT:
             # At this point, the player wants to quit.
@@ -327,7 +413,9 @@ def main():
         # At this point it means the player command is go.
         elif player_command == Command.GO:
             # Pass player_direction to move_player to update the player's location to a new room.
-            move_player(player_direction)
+            move_player(player_direction_or_item)
+        elif player_command == Command.GET:
+            get_item()
     # After exiting the loop, display a line of dashes.
     # The display a goodbye message to the player.
     print('\n' + '-' * 46)
