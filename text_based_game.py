@@ -3,7 +3,6 @@ from enum import Enum
 import time
 
 
-# todo: replace all strings with enums and parse them
 class Command(Enum):
     """Define values for the Command type."""
     EXIT = 'exit'
@@ -76,8 +75,9 @@ rooms = {
     Room.COMMON_AREA: {
         Direction.NORTH: Room.SCIENCE_LAB,
         Direction.SOUTH: Room.GALLEY,
-        Direction.EAST: Room.BRIDGE,
-        Direction.WEST: Room.ENGINEERING
+        Direction.EAST: Room.ENGINEERING,
+        Direction.WEST: Room.BRIDGE,
+        'item': ''
     },
     Room.CREW_QUARTERS: {
         Direction.WEST: Room.GALLEY,
@@ -122,13 +122,19 @@ player = {
 def instruction_help():
     """Displays instructions on how to play the game"""
     # Prints a line of dashes before the instructions.
-    print('-' * 68)
+    print('\n'+'-' * 82)
     # Displays instructions on how to play the game.
-    print("Explore the game by using move commands to navigate around the map.")
-    print("Move Commands: 'go North', 'go South', 'go East', 'go West'")
-    print("Use the command 'exit' to quit the game.")
+    print('Explore the game by using move commands to navigate around the map.')
+    print('You must collect the six required items to win the game.')
+    print('If you run into whatever is on your ship before collecting all items, you lose!')
+    print('\nMove Commands:')
+    print('\tgo North, go South, go East, go West')
+    print('Other Commands:')
+    print('\tget <item name>, help, exit')
+    print('Required Items:')
+    print('\taccess card, space glue, sonic screwdriver, spare parts, snacks, powered armor')
     # Prints a line of dashes after the instructions.
-    print('-' * 68)
+    print('-' * 82)
 
 
 def slow_print(line_to_print):
@@ -142,7 +148,7 @@ def slow_print(line_to_print):
             # todo: uncomment time.sleep delay
             # time.sleep(.02)
         # Prints two lines between each section
-        print('\n')
+        print('')
 
 
 def display_intro():
@@ -150,7 +156,7 @@ def display_intro():
     # Displays game title.
     print('Space Text Adventure Game')
     # Prints a line of dashes after the title.
-    print('-' * 68)
+    print('-' * 82)
     # Separated game introduction in separate sections.
     game_intro_line_one = "Your ship is under attack and you're adrift in space. Someone,\n" \
                           "or something, is running amuck causing systems to malfunction."
@@ -176,6 +182,11 @@ def display_status():
     print('\n' + '-' * 36)
     # Prints the players current location by accessing the player dictionary using the location key.
     print(f"You are in the {player['location'].value}")
+    # Prints the list of items the player has in their inventory.
+    print(f"Inventory: {player['inventory']}")
+    # Displays any item in the current location, if there is one.
+    if rooms[player['location']]['item']:
+        print(f"You see {rooms[player['location']]['item'].value}")
     # Prints a line of dashes before the move prompt.
     print('-' * 36)
 
@@ -228,6 +239,8 @@ def get_player_action():
     command, direction = player_input()
     # Passes command and direction to parse_enum to convert string to matching enum.
     command, direction = parse_enum(command, direction)
+    # Counter for number of times the player goes through the loop for invalid input.
+    invalid_input_count = 0
     # Checks for a valid command or a valid direction.
     # If either is not valid, then it enters the loop.
     while not command or direction not in rooms[player['location']].keys():
@@ -247,6 +260,12 @@ def get_player_action():
             print("You can't go that way")
         # Display the players current status and then get their input again.
         display_status()
+        # If the player enters too many invalid commands they are prompted to ask for help.
+        if invalid_input_count >= 2:
+            print("You seem to be lost. Don't forget, you can enter the command 'help' "
+                  "to view how to play.")
+        # increments counter by one.
+        invalid_input_count += 1
         # If the player enters a valid move at this point it will break out of the loop.
         # Otherwise, the loop will continue.
         command, direction = player_input()
@@ -301,6 +320,10 @@ def main():
             # If exit_game() returns true, loop will end.
             # If exit_game() returns false, loop will continue.
             quit_game = exit_game()
+        # Checks if the players command is for help.
+        elif player_command == Command.HELP:
+            # Calls instruction_help to display the instructions again.
+            instruction_help()
         # At this point it means the player command is go.
         elif player_command == Command.GO:
             # Pass player_direction to move_player to update the player's location to a new room.
