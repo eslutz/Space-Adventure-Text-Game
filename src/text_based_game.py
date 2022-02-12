@@ -448,7 +448,7 @@ def main():
     # After exiting the loop, display a line of dashes.
     # The display a goodbye message to the player.
     print('\n' + '-' * 46)
-    print('Thanks for playing Space Text Adventure Game.')
+    print('Thanks for playing Space Adventure Text Game.')
     print('I hope you enjoyed it!!!')
 
 
