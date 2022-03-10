@@ -1,59 +1,11 @@
 """Space Adventure Text Based Game"""
-from enum import Enum
 import time
 
-
-class Command(Enum):
-    """Define values for the Command type."""
-    EXIT = 'exit'
-    GET = 'get'
-    GO = 'go'
-    HELP = 'help'
-
-
-class Direction(Enum):
-    """Define values for the Direction type."""
-    EAST = 'East'
-    NORTH = 'North'
-    SOUTH = 'South'
-    WEST = 'West'
-
-
-class Item(Enum):
-    """Define values for the Item type."""
-    ACCESS_CARD = 'Access Card'
-    FIRST_AID_KIT = 'First Aid Kit'
-    FLUX_CAPACITOR = 'Flux Capacitor'
-    POWERED_ARMOR = 'Powered Armor'
-    SOCKS = 'Socks'
-    SONIC_SCREWDRIVER = 'Sonic Screwdriver'
-    SPACE_GLUE = 'Space Glue'
-    SPACE_SNACKS = 'Space Snacks'
-    SPARE_PARTS = 'Spare Parts'
-    VILLAIN = 'Space Monster'
-
-
-class Room(Enum):
-    """Define values for the Room type."""
-    AIRLOCK = 'Airlock'
-    ARMORY = 'Armory'
-    BRIDGE = 'Bridge'
-    CARGO_BAY = 'Cargo Bay'
-    COMMON_AREA = 'Common Area'
-    CREW_QUARTERS = 'Crew Quarters'
-    ENGINEERING = 'Engineering'
-    GALLEY = 'Galley'
-    MEDICAL_BAY = 'Medical Bay'
-    REACTOR = 'Reactor'
-    SCIENCE_LAB = 'Science Lab'
-
-
-class Key(Enum):
-    """Defines values for needed dictionary keys."""
-    INVENTORY = 1
-    ITEM = 2
-    LOCATION = 3
-
+from types.command import Command
+from types.direction import Direction
+from types.item import Item
+from types.key import Key
+from types.room import Room
 
 # A dictionary for the simplified dragon text game.
 # The dictionary links a room to other rooms.
