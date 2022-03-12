@@ -11,82 +11,82 @@ from custom_types.room import Room
 # The dictionary links a room to other rooms.
 rooms = {
     Room.AIRLOCK: {
-        Direction.AFT: Room.CARGO_BAY,
+        Direction.STARBOARD: Room.CARGO_BAY,
         Key.ITEM: {
             Item.VILLAIN: 'the'
         }
     },
     Room.ARMORY: {
-        Direction.AFT: Room.BRIDGE,
-        Direction.PORT: Room.SCIENCE_LAB,
+        Direction.PORT: Room.BRIDGE,
+        Direction.AFT: Room.SCIENCE_LAB,
         Key.ITEM: {
             Item.POWERED_ARMOR: 'your'
         }
     },
     Room.BRIDGE: {
-        Direction.FORWARD: Room.ARMORY,
-        Direction.AFT: Room.MEDICAL_BAY,
-        Direction.PORT: Room.COMMON_AREA,
+        Direction.STARBOARD: Room.ARMORY,
+        Direction.PORT: Room.MEDICAL_BAY,
+        Direction.AFT: Room.COMMON_AREA,
         Key.ITEM: {
             Item.ACCESS_CARD: 'an'
         }
     },
     Room.CARGO_BAY: {
-        Direction.FORWARD: Room.AIRLOCK,
-        Direction.AFT: Room.ENGINEERING,
-        Direction.STARBOARD: Room.SCIENCE_LAB,
+        Direction.STARBOARD: Room.AIRLOCK,
+        Direction.PORT: Room.ENGINEERING,
+        Direction.FORWARD: Room.SCIENCE_LAB,
         Key.ITEM: {
             Item.SPARE_PARTS: 'some'
         }
     },
     Room.COMMON_AREA: {
-        Direction.FORWARD: Room.SCIENCE_LAB,
-        Direction.AFT: Room.GALLEY,
-        Direction.PORT: Room.ENGINEERING,
-        Direction.STARBOARD: Room.BRIDGE,
+        Direction.STARBOARD: Room.SCIENCE_LAB,
+        Direction.PORT: Room.GALLEY,
+        Direction.AFT: Room.ENGINEERING,
+        Direction.FORWARD: Room.BRIDGE,
         Key.ITEM: {
             '': ''
         }
     },
     Room.CREW_QUARTERS: {
-        Direction.STARBOARD: Room.GALLEY,
+        Direction.FORWARD: Room.GALLEY,
         Key.ITEM: {
             Item.SOCKS: 'your'
         }
     },
     Room.ENGINEERING: {
-        Direction.FORWARD: Room.CARGO_BAY,
-        Direction.PORT: Room.REACTOR,
-        Direction.STARBOARD: Room.COMMON_AREA,
+        Direction.STARBOARD: Room.CARGO_BAY,
+        Direction.AFT: Room.REACTOR,
+        Direction.FORWARD: Room.COMMON_AREA,
         Key.ITEM: {
             Item.SONIC_SCREWDRIVER: 'a'
         }
     },
     Room.GALLEY: {
-        Direction.FORWARD: Room.COMMON_AREA,
-        Direction.PORT: Room.CREW_QUARTERS,
-        Direction.STARBOARD: Room.MEDICAL_BAY,
+        Direction.STARBOARD: Room.COMMON_AREA,
+        Direction.AFT: Room.CREW_QUARTERS,
+        Direction.FORWARD: Room.MEDICAL_BAY,
         Key.ITEM: {
             Item.SPACE_SNACKS: 'some'
         }
     },
     Room.MEDICAL_BAY: {
-        Direction.FORWARD: Room.BRIDGE,
-        Direction.PORT: Room.GALLEY,
+        Direction.STARBOARD: Room.BRIDGE,
+        Direction.AFT: Room.GALLEY,
         Key.ITEM: {
             Item.FIRST_AID_KIT: 'a'
         }
     },
     Room.REACTOR: {
-        Direction.STARBOARD: Room.ENGINEERING,
+        Direction.FORWARD: Room.ENGINEERING,
         Key.ITEM: {
             Item.FLUX_CAPACITOR: 'a'
         }
     },
     Room.SCIENCE_LAB: {
-        Direction.AFT: Room.COMMON_AREA,
-        Direction.PORT: Room.CARGO_BAY,
-        Direction.STARBOARD: Room.ARMORY,
+        Direction.PORT: Room.COMMON_AREA,
+        Direction.AFT: Room.CARGO_BAY,
+        Direction.FORWARD: Room.ARMORY,
         Key.ITEM: {
             Item.SPACE_GLUE: 'some'
         }
