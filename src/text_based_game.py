@@ -1,11 +1,11 @@
 """Space Adventure Text Based Game"""
 import time
 
-from types.command import Command
-from types.direction import Direction
-from types.item import Item
-from types.key import Key
-from types.room import Room
+from custom_types.command import Command
+from custom_types.direction import Direction
+from custom_types.item import Item
+from custom_types.key import Key
+from custom_types.room import Room
 
 # A dictionary for the simplified dragon text game.
 # The dictionary links a room to other rooms.
