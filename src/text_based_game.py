@@ -11,82 +11,82 @@ from types.room import Room
 # The dictionary links a room to other rooms.
 rooms = {
     Room.AIRLOCK: {
-        Direction.SOUTH: Room.CARGO_BAY,
+        Direction.AFT: Room.CARGO_BAY,
         Key.ITEM: {
             Item.VILLAIN: 'the'
         }
     },
     Room.ARMORY: {
-        Direction.SOUTH: Room.BRIDGE,
-        Direction.EAST: Room.SCIENCE_LAB,
+        Direction.AFT: Room.BRIDGE,
+        Direction.PORT: Room.SCIENCE_LAB,
         Key.ITEM: {
             Item.POWERED_ARMOR: 'your'
         }
     },
     Room.BRIDGE: {
-        Direction.NORTH: Room.ARMORY,
-        Direction.SOUTH: Room.MEDICAL_BAY,
-        Direction.EAST: Room.COMMON_AREA,
+        Direction.FORWARD: Room.ARMORY,
+        Direction.AFT: Room.MEDICAL_BAY,
+        Direction.PORT: Room.COMMON_AREA,
         Key.ITEM: {
             Item.ACCESS_CARD: 'an'
         }
     },
     Room.CARGO_BAY: {
-        Direction.NORTH: Room.AIRLOCK,
-        Direction.SOUTH: Room.ENGINEERING,
-        Direction.WEST: Room.SCIENCE_LAB,
+        Direction.FORWARD: Room.AIRLOCK,
+        Direction.AFT: Room.ENGINEERING,
+        Direction.STARBOARD: Room.SCIENCE_LAB,
         Key.ITEM: {
             Item.SPARE_PARTS: 'some'
         }
     },
     Room.COMMON_AREA: {
-        Direction.NORTH: Room.SCIENCE_LAB,
-        Direction.SOUTH: Room.GALLEY,
-        Direction.EAST: Room.ENGINEERING,
-        Direction.WEST: Room.BRIDGE,
+        Direction.FORWARD: Room.SCIENCE_LAB,
+        Direction.AFT: Room.GALLEY,
+        Direction.PORT: Room.ENGINEERING,
+        Direction.STARBOARD: Room.BRIDGE,
         Key.ITEM: {
             '': ''
         }
     },
     Room.CREW_QUARTERS: {
-        Direction.WEST: Room.GALLEY,
+        Direction.STARBOARD: Room.GALLEY,
         Key.ITEM: {
             Item.SOCKS: 'your'
         }
     },
     Room.ENGINEERING: {
-        Direction.NORTH: Room.CARGO_BAY,
-        Direction.EAST: Room.REACTOR,
-        Direction.WEST: Room.COMMON_AREA,
+        Direction.FORWARD: Room.CARGO_BAY,
+        Direction.PORT: Room.REACTOR,
+        Direction.STARBOARD: Room.COMMON_AREA,
         Key.ITEM: {
             Item.SONIC_SCREWDRIVER: 'a'
         }
     },
     Room.GALLEY: {
-        Direction.NORTH: Room.COMMON_AREA,
-        Direction.EAST: Room.CREW_QUARTERS,
-        Direction.WEST: Room.MEDICAL_BAY,
+        Direction.FORWARD: Room.COMMON_AREA,
+        Direction.PORT: Room.CREW_QUARTERS,
+        Direction.STARBOARD: Room.MEDICAL_BAY,
         Key.ITEM: {
             Item.SPACE_SNACKS: 'some'
         }
     },
     Room.MEDICAL_BAY: {
-        Direction.NORTH: Room.BRIDGE,
-        Direction.EAST: Room.GALLEY,
+        Direction.FORWARD: Room.BRIDGE,
+        Direction.PORT: Room.GALLEY,
         Key.ITEM: {
             Item.FIRST_AID_KIT: 'a'
         }
     },
     Room.REACTOR: {
-        Direction.WEST: Room.ENGINEERING,
+        Direction.STARBOARD: Room.ENGINEERING,
         Key.ITEM: {
             Item.FLUX_CAPACITOR: 'a'
         }
     },
     Room.SCIENCE_LAB: {
-        Direction.SOUTH: Room.COMMON_AREA,
-        Direction.EAST: Room.CARGO_BAY,
-        Direction.WEST: Room.ARMORY,
+        Direction.AFT: Room.COMMON_AREA,
+        Direction.PORT: Room.CARGO_BAY,
+        Direction.STARBOARD: Room.ARMORY,
         Key.ITEM: {
             Item.SPACE_GLUE: 'some'
         }
@@ -139,7 +139,7 @@ def instruction_help():
     print('\nRequired Items:')
     print(f"\t{', '.join(required_item_list)}")
     print('Move Commands:')
-    print('\tgo North, go South, go East, go West')
+    print('\tgo Forward, go Aft, go Port, go Starboard')
     print('Other Commands:')
     print('\tget <item name>, help, exit')
     # Prints a line of dashes after the instructions.
