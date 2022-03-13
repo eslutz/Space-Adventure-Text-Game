@@ -1,4 +1,4 @@
-[![Pylint](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/pylint.yml/badge.svg)](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/pylint.yml)
+[![Pylint](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/pylint.yml/badge.svg)](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/pylint.yml) [![CodeQL](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/codeql-analysis.yml)
 # Space Adventure Text Game
 
 A small text based game set on your ship.
