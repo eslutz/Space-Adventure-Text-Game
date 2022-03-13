@@ -2,7 +2,7 @@
 from setuptools import setup, find_namespace_packages
 
 setup(
-    name="text_based_game",
+    name="space_adventure_text_game",
     author="Eric Slutz",
     author_email="eric.slutz@icloud.com",
     url="https://github.com/eslutz/Space-Adventure-Text-Game",
@@ -15,11 +15,11 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "text_based_game=text_based_game.__main__:main",
+            "space_adventure_text_game=space_adventure_text_game.__main__:main",
         ]
     },
     classifiers=[
-        "Programming Language :: Python :: 3.0",
+        "Programming Language :: Python :: 3.10",
         "Environment :: Console",
     ],
 )
