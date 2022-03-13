@@ -1,3 +1,4 @@
+[![Pylint](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/pylint.yml/badge.svg)](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/pylint.yml)
 # Space Adventure Text Game
 
 A small text based game set on your ship.
