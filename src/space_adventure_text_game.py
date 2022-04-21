@@ -1,92 +1,92 @@
 """Space Adventure Text Based Game"""
 import time
 
-from types.command import Command
-from types.direction import Direction
-from types.item import Item
-from types.key import Key
-from types.room import Room
+from custom_type.command import Command
+from custom_type.direction import Direction
+from custom_type.item import Item
+from custom_type.key import Key
+from custom_type.room import Room
 
 # A dictionary for the simplified dragon text game.
 # The dictionary links a room to other rooms.
 rooms = {
     Room.AIRLOCK: {
-        Direction.SOUTH: Room.CARGO_BAY,
+        Direction.STARBOARD: Room.CARGO_BAY,
         Key.ITEM: {
             Item.VILLAIN: 'the'
         }
     },
     Room.ARMORY: {
-        Direction.SOUTH: Room.BRIDGE,
-        Direction.EAST: Room.SCIENCE_LAB,
+        Direction.PORT: Room.BRIDGE,
+        Direction.AFT: Room.SCIENCE_LAB,
         Key.ITEM: {
             Item.POWERED_ARMOR: 'your'
         }
     },
     Room.BRIDGE: {
-        Direction.NORTH: Room.ARMORY,
-        Direction.SOUTH: Room.MEDICAL_BAY,
-        Direction.EAST: Room.COMMON_AREA,
+        Direction.STARBOARD: Room.ARMORY,
+        Direction.PORT: Room.MEDICAL_BAY,
+        Direction.AFT: Room.COMMON_AREA,
         Key.ITEM: {
             Item.ACCESS_CARD: 'an'
         }
     },
     Room.CARGO_BAY: {
-        Direction.NORTH: Room.AIRLOCK,
-        Direction.SOUTH: Room.ENGINEERING,
-        Direction.WEST: Room.SCIENCE_LAB,
+        Direction.STARBOARD: Room.AIRLOCK,
+        Direction.PORT: Room.ENGINEERING,
+        Direction.FORWARD: Room.SCIENCE_LAB,
         Key.ITEM: {
             Item.SPARE_PARTS: 'some'
         }
     },
     Room.COMMON_AREA: {
-        Direction.NORTH: Room.SCIENCE_LAB,
-        Direction.SOUTH: Room.GALLEY,
-        Direction.EAST: Room.ENGINEERING,
-        Direction.WEST: Room.BRIDGE,
+        Direction.STARBOARD: Room.SCIENCE_LAB,
+        Direction.PORT: Room.GALLEY,
+        Direction.AFT: Room.ENGINEERING,
+        Direction.FORWARD: Room.BRIDGE,
         Key.ITEM: {
             '': ''
         }
     },
     Room.CREW_QUARTERS: {
-        Direction.WEST: Room.GALLEY,
+        Direction.FORWARD: Room.GALLEY,
         Key.ITEM: {
             Item.SOCKS: 'your'
         }
     },
     Room.ENGINEERING: {
-        Direction.NORTH: Room.CARGO_BAY,
-        Direction.EAST: Room.REACTOR,
-        Direction.WEST: Room.COMMON_AREA,
+        Direction.STARBOARD: Room.CARGO_BAY,
+        Direction.AFT: Room.REACTOR,
+        Direction.FORWARD: Room.COMMON_AREA,
         Key.ITEM: {
             Item.SONIC_SCREWDRIVER: 'a'
         }
     },
     Room.GALLEY: {
-        Direction.NORTH: Room.COMMON_AREA,
-        Direction.EAST: Room.CREW_QUARTERS,
-        Direction.WEST: Room.MEDICAL_BAY,
+        Direction.STARBOARD: Room.COMMON_AREA,
+        Direction.AFT: Room.CREW_QUARTERS,
+        Direction.FORWARD: Room.MEDICAL_BAY,
         Key.ITEM: {
             Item.SPACE_SNACKS: 'some'
         }
     },
     Room.MEDICAL_BAY: {
-        Direction.NORTH: Room.BRIDGE,
-        Direction.EAST: Room.GALLEY,
+        Direction.STARBOARD: Room.BRIDGE,
+        Direction.AFT: Room.GALLEY,
         Key.ITEM: {
             Item.FIRST_AID_KIT: 'a'
         }
     },
     Room.REACTOR: {
-        Direction.WEST: Room.ENGINEERING,
+        Direction.FORWARD: Room.ENGINEERING,
         Key.ITEM: {
             Item.FLUX_CAPACITOR: 'a'
         }
     },
     Room.SCIENCE_LAB: {
-        Direction.SOUTH: Room.COMMON_AREA,
-        Direction.EAST: Room.CARGO_BAY,
-        Direction.WEST: Room.ARMORY,
+        Direction.PORT: Room.COMMON_AREA,
+        Direction.AFT: Room.CARGO_BAY,
+        Direction.FORWARD: Room.ARMORY,
         Key.ITEM: {
             Item.SPACE_GLUE: 'some'
         }
@@ -139,7 +139,7 @@ def instruction_help():
     print('\nRequired Items:')
     print(f"\t{', '.join(required_item_list)}")
     print('Move Commands:')
-    print('\tgo North, go South, go East, go West')
+    print('\tgo Forward, go Aft, go Port, go Starboard')
     print('Other Commands:')
     print('\tget <item name>, help, exit')
     # Prints a line of dashes after the instructions.
