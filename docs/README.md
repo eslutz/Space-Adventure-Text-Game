@@ -1,4 +1,4 @@
-[![Pylint](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/pylint.yml/badge.svg)](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/pylint.yml) [![CodeQL](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/codeql-analysis.yml)
+[![Flake8 Linting](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/flake8-linting.yml/badge.svg)](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/flake8-linting.yml) [![CodeQL](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/eslutz/Space-Adventure-Text-Game/actions/workflows/codeql-analysis.yml)
 # Space Adventure Text Game
 
 A small text based game set on your ship.
@@ -26,4 +26,7 @@ A small text based game set on your ship.
 
 ## How to play:
 
-- For now, the only way to play is take a copy of the script and run it using your own local Python 3 interpreter.
+There's two ways to play!
+
+1. Check it out on [Replit (Space Adventure Text Game)](https://replit.com/@eslutz/Space-Adventure-Text-Game?v=1).
+1. Take a copy of the script and run it using your own local Python 3 interpreter.
