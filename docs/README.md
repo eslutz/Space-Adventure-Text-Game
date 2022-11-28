@@ -30,3 +30,8 @@ There's two ways to play!
 
 1. Check it out on [Replit (Space Adventure Text Game)](https://replit.com/@eslutz/Space-Adventure-Text-Game?v=1).
 1. Take a copy of the script and run it using your own local Python 3 interpreter.
+
+## Be sure to check out:
+
+- [Contributing Guidelines](https://github.com/eslutz/.github/blob/main/CONTRIBUTING.md)
+- [Code of Conduct](https://github.com/eslutz/.github/blob/main/CODE_OF_CONDUCT.md)
